@@ -41,10 +41,11 @@ func Deal(d Deck, handSize int) (Deck, Deck) {
 }
 
 func (d Deck) Shuffle() {
-	rand.Seed(time.Now().Unix())
+	source := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(source)
 	shuffledAtLeastOne := false
 	for i := range d {
-		pos := rand.Intn(len(d) - 1)
+		pos := r.Intn(len(d) - 1)
 		shuffledAtLeastOne = shuffledAtLeastOne || pos != i
 		d[i], d[pos] = d[pos], d[i]
 	}
