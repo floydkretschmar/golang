@@ -1,6 +1,11 @@
 package cards
 
-import "fmt"
+import (
+	"fmt"
+	"io/fs"
+	"io/ioutil"
+	"log"
+)
 
 type Deck []string
 
@@ -25,4 +30,19 @@ func (d Deck) Print() {
 
 func (d Deck) Deal(handSize int) (Deck, Deck) {
 	return d[:handSize], d[handSize:]
+}
+
+func (d Deck) Save(fileName string, permissions fs.FileMode) {
+	err := ioutil.WriteFile(fileName, []byte(d.toString()), permissions)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (d Deck) toString() string {
+	deckString := d[0]
+	for _, card := range d[1:] {
+		deckString += "\n" + card
+	}
+	return deckString
 }
