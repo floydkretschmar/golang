@@ -7,6 +7,7 @@ import (
 	"log"
 	"math/rand"
 	"strings"
+	"time"
 )
 
 type Deck []string
@@ -40,6 +41,7 @@ func Deal(d Deck, handSize int) (Deck, Deck) {
 }
 
 func (d Deck) Shuffle() {
+	rand.Seed(time.Now().Unix())
 	shuffledAtLeastOne := false
 	for i := range d {
 		pos := rand.Intn(len(d) - 1)
