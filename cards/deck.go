@@ -23,14 +23,14 @@ func NewDeck() Deck {
 	return deck
 }
 
+func Deal(d Deck, handSize int) (Deck, Deck) {
+	return d[:handSize], d[handSize:]
+}
+
 func (d Deck) Print() {
 	for i, card := range d {
 		fmt.Println(i, card)
 	}
-}
-
-func (d Deck) Deal(handSize int) (Deck, Deck) {
-	return d[:handSize], d[handSize:]
 }
 
 func (d Deck) Save(fileName string, permissions fs.FileMode) {
