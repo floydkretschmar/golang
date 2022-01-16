@@ -106,11 +106,13 @@ func TestDeck_NewDeckFromFileDeckDoesNotExist(t *testing.T) {
 
 func TestDeck_Shuffle(t *testing.T) {
 	deck := NewDeck()
-	shuffledDeck := Shuffle(deck)
+	originalDeck := make(Deck, len(deck))
+	copy(originalDeck, deck)
+	deck.Shuffle()
 
 	exactSameOrder := true
-	for i, shuffledCard := range shuffledDeck {
-		if deck[i] != shuffledCard {
+	for i, shuffledCard := range deck {
+		if originalDeck[i] != shuffledCard {
 			exactSameOrder = false
 			break
 		}

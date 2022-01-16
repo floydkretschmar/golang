@@ -39,23 +39,16 @@ func Deal(d Deck, handSize int) (Deck, Deck) {
 	return d[:handSize], d[handSize:]
 }
 
-func Shuffle(d Deck) Deck {
-	shuffledDeck := make(Deck, len(d))
-	copy(shuffledDeck, d)
-
+func (d Deck) Shuffle() {
 	shuffledAtLeastOne := false
-	for i, card := range shuffledDeck {
-		pos := rand.Intn(len(shuffledDeck))
+	for i := range d {
+		pos := rand.Intn(len(d) - 1)
 		shuffledAtLeastOne = shuffledAtLeastOne || pos != i
-		cardAtPos := shuffledDeck[pos]
-		shuffledDeck[pos] = card
-		shuffledDeck[i] = cardAtPos
+		d[i], d[pos] = d[pos], d[i]
 	}
 
-	if shuffledAtLeastOne {
-		return shuffledDeck
-	} else {
-		return Shuffle(shuffledDeck)
+	if !shuffledAtLeastOne {
+		d.Shuffle()
 	}
 }
 
