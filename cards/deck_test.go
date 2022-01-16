@@ -35,3 +35,21 @@ func TestNewDeck(t *testing.T) {
 		}
 	}
 }
+
+func TestDeal(t *testing.T) {
+	deck := NewDeck()
+	handSize := 5
+	hand, leftoverDeck := Deal(deck, handSize)
+
+	if len(hand) != handSize {
+		t.Errorf("Expected hand to have size %d but received %d cards.", handSize, len(hand))
+	}
+
+	for _, handCard := range hand {
+		for _, deckCard := range leftoverDeck {
+			if handCard == deckCard {
+				t.Errorf("Hand card %s still exists in leftover deck.", handCard)
+			}
+		}
+	}
+}
