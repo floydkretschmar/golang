@@ -104,6 +104,23 @@ func TestDeck_NewDeckFromFileDeckDoesNotExist(t *testing.T) {
 	}
 }
 
+func TestDeck_Shuffle(t *testing.T) {
+	deck := NewDeck()
+	shuffledDeck := Shuffle(deck)
+
+	exactSameOrder := true
+	for i, shuffledCard := range shuffledDeck {
+		if deck[i] != shuffledCard {
+			exactSameOrder = false
+			break
+		}
+	}
+
+	if exactSameOrder {
+		t.Errorf("Expected the shuffled deck to be different from the provided deck but the decks had the equivalent order.")
+	}
+}
+
 func deleteDeck(filename string, t *testing.T) {
 	err := os.Remove(filename)
 	if err != nil {

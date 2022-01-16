@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"strings"
 )
 
@@ -36,6 +37,26 @@ func NewDeckFromFile(filename string) Deck {
 
 func Deal(d Deck, handSize int) (Deck, Deck) {
 	return d[:handSize], d[handSize:]
+}
+
+func Shuffle(d Deck) Deck {
+	shuffledDeck := make(Deck, len(d))
+	copy(shuffledDeck, d)
+
+	shuffledAtLeastOne := false
+	for i, card := range shuffledDeck {
+		pos := rand.Intn(len(shuffledDeck))
+		shuffledAtLeastOne = shuffledAtLeastOne || pos != i
+		cardAtPos := shuffledDeck[pos]
+		shuffledDeck[pos] = card
+		shuffledDeck[i] = cardAtPos
+	}
+
+	if shuffledAtLeastOne {
+		return shuffledDeck
+	} else {
+		return Shuffle(shuffledDeck)
+	}
 }
 
 func (d Deck) Print() {
