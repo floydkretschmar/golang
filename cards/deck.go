@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"io/ioutil"
 	"log"
+	"strings"
 )
 
 type Deck []string
@@ -40,9 +41,5 @@ func (d Deck) Save(fileName string, permissions fs.FileMode) {
 }
 
 func (d Deck) toString() string {
-	deckString := d[0]
-	for _, card := range d[1:] {
-		deckString += "\n" + card
-	}
-	return deckString
+	return strings.Join(d, "\n")
 }
