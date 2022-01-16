@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/fs"
 	"io/ioutil"
-	"log"
 	"strings"
 )
 
@@ -33,11 +32,8 @@ func (d Deck) Print() {
 	}
 }
 
-func (d Deck) Save(fileName string, permissions fs.FileMode) {
-	err := ioutil.WriteFile(fileName, []byte(d.toString()), permissions)
-	if err != nil {
-		log.Fatal(err)
-	}
+func (d Deck) Save(fileName string, permissions fs.FileMode) error {
+	return ioutil.WriteFile(fileName, []byte(d.toString()), permissions)
 }
 
 func (d Deck) toString() string {

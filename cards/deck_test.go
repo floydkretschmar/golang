@@ -74,9 +74,12 @@ func TestDeck_ToString(t *testing.T) {
 func TestDeck_Save(t *testing.T) {
 	deck := NewDeck()
 	fileName := "deck"
-	deck.Save(fileName, 0774)
+	err := deck.Save(fileName, 0774)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
 
-	_, err := ioutil.ReadFile(fileName)
+	_, err = ioutil.ReadFile(fileName)
 
 	if err != nil {
 		t.Errorf(err.Error())
