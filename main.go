@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"github.com/floydkretschmar/golang_cards/cards"
+)
 
 func main() {
-	fmt.Println("Hello World!")
+	deck := cards.NewDeck()
+	deck.Print()
 }
