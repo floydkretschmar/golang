@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/fs"
 	"io/ioutil"
+	"log"
 	"strings"
 )
 
@@ -22,6 +23,17 @@ func NewDeck() Deck {
 	return deck
 }
 
+func NewDeckFromFile(filename string) Deck {
+	data, err := ioutil.ReadFile(filename)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	s := string(data)
+	return strings.Split(s, ";")
+}
+
 func Deal(d Deck, handSize int) (Deck, Deck) {
 	return d[:handSize], d[handSize:]
 }
@@ -32,8 +44,11 @@ func (d Deck) Print() {
 	}
 }
 
-func (d Deck) Save(fileName string, permissions fs.FileMode) error {
-	return ioutil.WriteFile(fileName, []byte(d.toString()), permissions)
+func (d Deck) Save(fileName string, permissions fs.FileMode) {
+	err := ioutil.WriteFile(fileName, []byte(d.toString()), permissions)
+	if err != nil {
+		log.Panicf("The file %s cannot be saved: %s", fileName, err.Error())
+	}
 }
 
 func (d Deck) toString() string {

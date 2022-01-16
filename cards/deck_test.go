@@ -1,6 +1,7 @@
 package cards
 
 import (
+	"errors"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -14,30 +15,7 @@ func TestDeck_NewDeck(t *testing.T) {
 		"Ace of Diamonds", "2 of Diamonds", "3 of Diamonds", "4 of Diamonds", "5 of Diamonds", "6 of Diamonds", "7 of Diamonds", "8 of Diamonds", "9 of Diamonds", "10 of Diamonds", "Jack of Diamonds", "Queen of Diamonds", "King of Diamonds",
 	}
 	deck := NewDeck()
-
-	if len(deck) != len(expectedDeck) {
-		t.Errorf("The created deck has length of %d instead of the expected lenght of %d", len(deck), len(expectedDeck))
-	}
-
-	var notFoundCards Deck
-	for _, expectedCard := range expectedDeck {
-		found := false
-		for _, card := range deck {
-			if card == expectedCard {
-				found = true
-				continue
-			}
-		}
-		if !found {
-			notFoundCards = append(notFoundCards, expectedCard)
-		}
-	}
-
-	if len(notFoundCards) > 0 {
-		for _, notFoundCard := range notFoundCards {
-			t.Errorf("The created deck does notFoundCard contain the card: %s", notFoundCard)
-		}
-	}
+	checkIfDecksAreEquivalent(t, deck, expectedDeck)
 }
 
 func TestDeck_Deal(t *testing.T) {
@@ -74,7 +52,8 @@ func TestDeck_ToString(t *testing.T) {
 func TestDeck_Save(t *testing.T) {
 	deck := NewDeck()
 	fileName := "deck"
-	err := deck.Save(fileName, 0774)
+
+	err := trySave(deck, fileName)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -84,9 +63,77 @@ func TestDeck_Save(t *testing.T) {
 	if err != nil {
 		t.Errorf(err.Error())
 	} else {
-		err = os.Remove(fileName)
-		if err != nil {
-			t.Errorf(err.Error())
+		deleteDeck(fileName, t)
+	}
+}
+
+func TestDeck_NewDeckFromFile(t *testing.T) {
+	deck := NewDeck()
+	fileName := "deck"
+	createdDeck := false
+
+	err := trySave(deck, fileName)
+	if err != nil {
+		t.Errorf(err.Error())
+	} else {
+		createdDeck = true
+	}
+
+	deckFromFile := NewDeckFromFile(fileName)
+	checkIfDecksAreEquivalent(t, deckFromFile, deck)
+
+	if createdDeck {
+		deleteDeck(fileName, t)
+	}
+}
+
+func deleteDeck(filename string, t *testing.T) {
+	err := os.Remove(filename)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+}
+
+func checkIfDecksAreEquivalent(t *testing.T, deck Deck, expectedDeck Deck) {
+	if len(deck) != len(expectedDeck) {
+		t.Errorf("The created deck has length of %d instead of the expected lenght of %d", len(deck), len(expectedDeck))
+	}
+
+	var notFoundCards Deck
+	for _, expectedCard := range expectedDeck {
+		found := false
+		for _, card := range deck {
+			if card == expectedCard {
+				found = true
+				continue
+			}
+		}
+		if !found {
+			notFoundCards = append(notFoundCards, expectedCard)
 		}
 	}
+
+	if len(notFoundCards) > 0 {
+		for _, notFoundCard := range notFoundCards {
+			t.Errorf("The created deck does not contain the card: %s", notFoundCard)
+		}
+	}
+}
+
+func trySave(d Deck, filename string) error {
+	var err error
+	defer func() {
+		if r := recover(); r != nil {
+			switch x := r.(type) {
+			case string:
+				err = errors.New(x)
+			case error:
+				err = x
+			default:
+				err = errors.New("unknown panic")
+			}
+		}
+	}()
+	d.Save(filename, 0774)
+	return err
 }
