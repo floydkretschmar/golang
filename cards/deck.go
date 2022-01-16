@@ -41,5 +41,5 @@ func (d Deck) Save(fileName string, permissions fs.FileMode) {
 }
 
 func (d Deck) toString() string {
-	return strings.Join(d, "\n")
+	return strings.Join(d, ";")
 }
