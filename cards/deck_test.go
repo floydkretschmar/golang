@@ -39,7 +39,7 @@ func TestNewDeck(t *testing.T) {
 func TestDeal(t *testing.T) {
 	deck := NewDeck()
 	handSize := 5
-	hand, leftoverDeck := Deal(deck, handSize)
+	hand, leftoverDeck := deck.Deal(handSize)
 
 	if len(hand) != handSize {
 		t.Errorf("Expected hand to have size %d but received %d cards.", handSize, len(hand))
