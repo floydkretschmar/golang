@@ -1,8 +1,10 @@
 package cards
 
 import (
+	"bou.ke/monkey"
 	"errors"
 	"io/ioutil"
+	"log"
 	"os"
 	"testing"
 )
@@ -84,6 +86,21 @@ func TestDeck_NewDeckFromFile(t *testing.T) {
 
 	if createdDeck {
 		deleteDeck(fileName, t)
+	}
+}
+
+func TestDeck_NewDeckFromFileDeckDoesNotExist(t *testing.T) {
+	fatalCalled := false
+	fakeLogFatal := func(msg ...interface{}) {
+		t.Log(msg)
+		fatalCalled = true
+	}
+	patch := monkey.Patch(log.Fatal, fakeLogFatal)
+	defer patch.Unpatch()
+	NewDeckFromFile("doesnotexist")
+
+	if !fatalCalled {
+		t.Errorf("A fatal error should have ocurred while reading the file but did not.")
 	}
 }
 
