@@ -3,14 +3,16 @@ package main
 import (
 	"fmt"
 	"github.com/floydkretschmar/golang_cards/cards"
+	"github.com/floydkretschmar/golang_cards/maps"
 	"github.com/floydkretschmar/golang_cards/structs"
 	"log"
 )
 
 func main() {
-	playingCards()
-	evenAndOdd()
-	createPerson()
+	//playingCards()
+	//evenAndOdd()
+	//createPerson()
+	useMaps()
 }
 
 func evenAndOdd() {
@@ -63,4 +65,23 @@ func createPerson() {
 
 	alex.Print()
 	alexandra.Print()
+}
+
+func useMaps() {
+	colors := map[string]string{
+		"red":   "#ff0000",
+		"green": "#4bf745",
+	}
+	var colorsEmpty map[string]string
+	colorsMake := make(map[string]string)
+	colorsMake["white"] = "#ffffff"
+	colorsMake["black"] = "#000000"
+
+	delete(colorsMake, "black")
+
+	fmt.Println(colors)
+	fmt.Println(colorsEmpty)
+	fmt.Println(colorsMake)
+
+	maps.PrintMap(colors)
 }
