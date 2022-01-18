@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/floydkretschmar/golang_cards/cards"
+	"github.com/floydkretschmar/golang_cards/languagebot"
 	"github.com/floydkretschmar/golang_cards/maps"
 	"github.com/floydkretschmar/golang_cards/structs"
 	"log"
@@ -12,7 +13,8 @@ func main() {
 	//playingCards()
 	//evenAndOdd()
 	//createPerson()
-	useMaps()
+	//useMaps()
+	useBots()
 }
 
 func evenAndOdd() {
@@ -84,4 +86,12 @@ func useMaps() {
 	fmt.Println(colorsMake)
 
 	maps.PrintMap(colors)
+}
+
+func useBots() {
+	var eBot languagebot.EnglishBot
+	var sBot languagebot.SpanishBot
+
+	languagebot.PrintGreeting(eBot)
+	languagebot.PrintGreeting(sBot)
 }
