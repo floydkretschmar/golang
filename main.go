@@ -6,7 +6,10 @@ import (
 	"github.com/floydkretschmar/golang_cards/languagebot"
 	"github.com/floydkretschmar/golang_cards/maps"
 	"github.com/floydkretschmar/golang_cards/structs"
+	"io"
 	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
@@ -14,7 +17,8 @@ func main() {
 	//evenAndOdd()
 	//createPerson()
 	//useMaps()
-	useBots()
+	//useBots()
+	httpInterface()
 }
 
 func evenAndOdd() {
@@ -94,4 +98,21 @@ func useBots() {
 
 	languagebot.PrintGreeting(eBot)
 	languagebot.PrintGreeting(sBot)
+}
+
+func httpInterface() {
+	resp, err := http.Get("http://google.com")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//data := make([]byte, 10000)
+	//data, err = ioutil.ReadAll(resp.Body)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//
+	//body := string(data)
+	//fmt.Println(body)
+	io.Copy(os.Stdout, resp.Body)
 }
