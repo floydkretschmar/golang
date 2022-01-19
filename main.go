@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"github.com/floydkretschmar/golang_cards/cards"
+	"github.com/floydkretschmar/golang_cards/customlog"
 	"github.com/floydkretschmar/golang_cards/languagebot"
 	"github.com/floydkretschmar/golang_cards/maps"
 	"github.com/floydkretschmar/golang_cards/structs"
 	"io"
 	"log"
 	"net/http"
-	"os"
 )
 
 func main() {
@@ -109,10 +109,11 @@ func httpInterface() {
 	//data := make([]byte, 10000)
 	//data, err = ioutil.ReadAll(resp.Body)
 	//if err != nil {
-	//	log.Fatal(err)
+	//	customlog.Fatal(err)
 	//}
 	//
 	//body := string(data)
 	//fmt.Println(body)
-	io.Copy(os.Stdout, resp.Body)
+	logger := customlog.LogWriter{}
+	io.Copy(logger, resp.Body)
 }
