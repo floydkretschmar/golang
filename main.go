@@ -6,6 +6,7 @@ import (
 	"github.com/floydkretschmar/golang_cards/customlog"
 	"github.com/floydkretschmar/golang_cards/languagebot"
 	"github.com/floydkretschmar/golang_cards/maps"
+	"github.com/floydkretschmar/golang_cards/shapes"
 	"github.com/floydkretschmar/golang_cards/structs"
 	"io"
 	"log"
@@ -18,7 +19,23 @@ func main() {
 	//createPerson()
 	//useMaps()
 	//useBots()
-	httpInterface()
+	//httpInterface()
+	useShapes()
+}
+
+func useShapes() {
+	triangle := shapes.Triangle{
+		Name:   "My Triangle",
+		Base:   5,
+		Height: 4,
+	}
+	square := shapes.Square{
+		Name:       "Your Square",
+		SideLength: 3,
+	}
+
+	shapes.PrintArea(triangle)
+	shapes.PrintArea(square)
 }
 
 func evenAndOdd() {
