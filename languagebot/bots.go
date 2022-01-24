@@ -21,3 +21,11 @@ func (SpanishBot) getGreeting() string {
 func PrintGreeting(bot Bot) {
 	fmt.Println(bot.getGreeting())
 }
+
+func UseBots() {
+	var eBot EnglishBot
+	var sBot SpanishBot
+
+	PrintGreeting(eBot)
+	PrintGreeting(sBot)
+}
